@@ -23,7 +23,7 @@ std::string GetTimestamp() {
   return ss.str();
 }
 
-std::ofstream OpenLogfilestreamWithTimestamp(const fs::path &path_logfile) {
+std::ofstream OpenLogfilestream(const fs::path &path_logfile) {
   fs::path dirpath_log = path_logfile.parent_path();
   if (!fs::exists(dirpath_log)) {
     bool success = fs::create_directories(dirpath_log);
@@ -36,10 +36,11 @@ std::ofstream OpenLogfilestreamWithTimestamp(const fs::path &path_logfile) {
 
 int main(int argc, char *argv[]) {
   std::cout << GetTimestamp() << std::endl;
+  std::cout << "Current path: " << fs::current_path() << std::endl;
 
   fs::path path_logfile =
-      fs::path(".") / ".log" / ("test_log," + GetTimestamp() + ".txt");
-  std::ofstream ofs = OpenLogfilestreamWithTimestamp(path_logfile);
+      fs::current_path() / ".log" / ("test_log," + GetTimestamp() + ".txt");
+  std::ofstream ofs = OpenLogfilestream(path_logfile);
   ofs << "lorem ipsum";
   ofs.close();
   std::cout << "Log written to file " << path_logfile << std::endl;
